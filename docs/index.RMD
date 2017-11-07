@@ -1,0 +1,341 @@
+---
+title: "Tensorflow, Tensorflow, What is it that you see?"
+author: "Ashic Mahtab (@ashic)"
+date: "5 November 2017"
+output:
+  revealjs::revealjs_presentation:
+#    theme: moon
+    css: site.css
+    slide_level: 2
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Agenda
+
+
+## We'll Cover
+
+* Deep Learning
+* Neural Networks
+* Tensorflow
+* Different Types of Neural Nets
+
+
+# Deep Learning
+
+## Lots of data, complex problems
+
+## Solving things only humans could do
+
+## Common language and toolkit across disciplines. 
+
+
+# Neural Networks
+
+## Perceptrons
+
+<img src='./images/1_Neural-Network-3-Layers.png'
+  alt='neural network' class='full-img' />
+  
+## Mathematical Model
+
+<img src='./images/2_math_model.png'
+  alt='math_model' class='full-img' />
+
+
+# Logistic Regression
+
+## Model
+
+<img src='./images/3_lr.png'
+  alt='logistic regression' class='full-img' />
+  
+## Softmax
+
+<img src='./images/4_softmax.png'
+  alt='softmax' class='full-img' />
+
+## Cross Entropy
+
+<img src='./images/5_ce.png'
+  alt='cross entropy' class='full-img' />
+  
+# Linear Model
+
+## Pros
+
+* Very Fast (GPUs)
+* Stable
+* Derivatives are constant
+
+## Parameter count
+
+<img src='./images/7_linear.png' alt='linear' />
+
+## Are...erm... Linear
+
+<img src='./images/8_linear.png' alt='linear' class='small-img' />
+  
+
+# Deep Learning 
+
+## Relu
+
+<img src='./images/9_relu.png' alt='relu' />
+
+## Deep Network
+
+<img src='./images/10_deep.png' alt='deep network' />
+
+  
+# Tensorflow and TFLearn
+
+## Load Data
+
+```
+import numpy as np
+import tensorflow as tf
+import tflearn
+import tflearn.datasets.mnist as mnist
+
+trainX, trainY, testX, testY =   mnist.load_data(one_hot=True)
+```
+
+## Visualise
+
+```
+# Visualizing the data
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# Function for displaying a training image by it's index in the MNIST set
+def display_digit(index):
+    label = trainY[index].argmax(axis=0)
+    # Reshape 784 array into 28x28 image
+    image = trainX[index].reshape([28,28])
+    plt.title('Training data, index: %d,  Label: %d' % (index, label))
+    plt.imshow(image, cmap='gray_r')
+    plt.show()
+    
+# Display the first (index 0) training image
+display_digit(0)
+```
+![digit](images/6_digit.png)
+
+## Model
+
+```
+# Define the neural network
+def build_model():
+    # This resets all parameters and variables, leave this here
+    tf.reset_default_graph()
+    
+    # Inputs
+    net = tflearn.input_data([None, trainX.shape[1]])
+
+    # Hidden layer(s)
+    net = tflearn.fully_connected(net, 128, activation='ReLU')
+    net = tflearn.fully_connected(net, 32, activation='ReLU')
+    
+    # Output layer and training model
+    net = tflearn.fully_connected(net, 10, activation='softmax')
+    net = tflearn.regression(
+      net, 
+      optimizer='sgd', 
+      learning_rate=0.01,
+      loss='categorical_crossentropy')
+    
+    model = tflearn.DNN(net)
+    return model
+```
+
+## Training
+
+```
+# Training
+model.fit(
+  trainX, 
+  trainY, 
+  validation_set=0.1, 
+  show_metric=True, 
+  batch_size=100, 
+  n_epoch=100)
+```
+
+## Testing
+
+```
+# Compare the labels that our model predicts with the actual labels
+
+
+predictions = np.array(model.predict(testX)).argmax(axis=1)
+
+# Calculate the accuracy.
+actual = testY.argmax(axis=1)
+test_accuracy = np.mean(predictions == actual, axis=0)
+
+# Print out the result
+print("Test accuracy: ", test_accuracy)
+```
+
+# Regularisation
+
+## L2
+
+<img src='./images/11_l2.png' alt='l2' class='full-img' />
+
+## Dropout
+
+<img src='./images/12_dropout.png' alt='l2' class='full-img' />
+
+# Convolutional Neural Nets
+
+## What
+
+<img src='./images/13_conv.jpg' alt='conv' />
+
+## Statistical Invariance
+
+<img src='./images/14_inv.png' alt='inv' class='small-img' /><br />
+<img src='./images/15_inv.png' alt='inv' class='small-img' />
+
+## Conv Nets
+
+<img src='./images/16_conv.png' alt='conv' class='small-img'  />
+
+## Convolutions
+
+<img src='./images/17_conv.png' alt='conv' class='small-img'  />
+
+## CNN
+
+<img src='./images/18_conv.png' alt='conv' />
+
+## Pooling
+
+<img src='./images/19_conv.png' alt='conv' />
+
+## Pooling
+
+<img src='./images/20_conv.png' alt='conv' />
+
+
+## 1x1 Convolutions
+
+<img src='./images/21_conv.png' alt='conv' />
+
+## Inception
+
+<img src='./images/22_conv.png' alt='conv' class='full-img' />
+
+# Recurrent Neural Nets
+
+## RNN
+
+<img src='./images/23_rnn.png' alt='conv' class='full-img' />
+
+## RNN
+
+<img src='./images/24_rnn.png' alt='conv' class='full-img' />
+
+## Problems
+
+<img src='./images/25_rnn.png' alt='conv' class='full-img' />
+
+## Gradient Clipping
+
+<img src='./images/26_rnn.png' alt='conv' class='full-img' />
+
+## LSTM
+
+<img src='./images/27_rnn.png' alt='conv' class='full-img' />
+
+## RNNs and Regularisation
+
+<img src='./images/28_rnn.png' alt='conv' class='full-img' />
+
+## Usage
+
+<img src='./images/29_rnn.png' alt='conv' class='full-img' />
+
+## Text Summarisation
+
+<img src='./images/30_rnn.png' alt='conv' class='full-img' />
+
+## Music Generation
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/LSHZ_b05W7o" frameborder="0" allowfullscreen></iframe>
+
+## Script Generation
+
+[https://github.com/ashic/udacity-tv-script-generation/blob/master/dlnd_tv_script_generation.ipynb](https://github.com/ashic/udacity-tv-script-generation/blob/master/dlnd_tv_script_generation.ipynb)
+
+## Translation
+
+[https://github.com/ashic/udacity-translation/blob/master/dlnd_language_translation.ipynb](https://github.com/ashic/udacity-translation/blob/master/dlnd_language_translation.ipynb)
+
+## Autoencoders
+
+[https://letsenhance.io/](https://letsenhance.io/)
+<img src='./images/31_rnn.jpg' alt='conv' class='full-img' />
+
+## Style Transfer
+<img src='./images/32_rnn.jpg' alt='conv' class='full-img' />
+
+## Style Transfer
+<img src='./images/33_rnn.jpg' alt='conv' class='full-img' />
+
+# Generative Adversarial Networks 
+
+## GANs
+
+<img src='./images/34_gan.png' alt='gan' class='full-img' />
+
+## StackGAN
+
+<img src='./images/35_gan.png' alt='gan' class='full-img' />
+
+## Pix2Pix
+
+<img src='./images/36_gan.png' alt='gan' class='full-img' />
+
+## Cartoon faces
+
+<img src='./images/37_gan.png' alt='gan' class='full-img' />
+
+## CycleGAN
+
+<img src='./images/38_gan.png' alt='gan' class='full-img' />
+
+## Simulated Training Sets
+
+<img src='./images/39_gan.png' alt='gan' class='full-img' />
+
+
+## Imitation Learning
+
+<img src='./images/40_gan.png' alt='gan' class='full-img' />
+
+
+## Particle Accelerators
+
+<img src='./images/41_gan.png' alt='gan' class='full-img' />
+
+## Captcha
+
+<img src='./images/42_gan.png' alt='gan' class='full-img' />
+
+## Example - Generating Faces
+
+[https://github.com/ashic/udacity-face-generation/blob/master/dlnd_face_generation.ipynb](https://github.com/ashic/udacity-face-generation/blob/master/dlnd_face_generation.ipynb)
+
+# Tools
+
+## Tensorboard
+
+<img src='./images/43_tools.gif' alt='tensorboard' class='full-img' />
+
