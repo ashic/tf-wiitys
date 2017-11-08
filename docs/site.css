@@ -2,6 +2,10 @@ body {
   background: #ffc733;
 }
 
+h1, h2, body, p, div {
+  font-family: consolas !important;
+}
+
 section.two-col p {
   float:right;
   width: 40%;

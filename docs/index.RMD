@@ -29,9 +29,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Lots of data, complex problems
 
+<img src='./images/01_probs.jpg' alt='probs' class='full-img' />
+
 ## Solving things only humans could do
+<img src='./images/02_probs.jpg' alt='probs' class='full-img' />
+
 
 ## Common language and toolkit across disciplines. 
+<img src='./images/03_probs.png' alt='probs' class='full-img' />
 
 
 # Neural Networks
@@ -112,7 +117,8 @@ trainX, trainY, testX, testY =   mnist.load_data(one_hot=True)
 import matplotlib.pyplot as plt
 %matplotlib inline
 
-# Function for displaying a training image by it's index in the MNIST set
+# Function for displaying a 
+# training image by it's index in the MNIST set
 def display_digit(index):
     label = trainY[index].argmax(axis=0)
     # Reshape 784 array into 28x28 image
@@ -335,7 +341,32 @@ print("Test accuracy: ", test_accuracy)
 
 # Tools
 
+## Libraries
+
+* Tensorflow
+* TFLearn
+* Keras 
+
 ## Tensorboard
 
 <img src='./images/43_tools.gif' alt='tensorboard' class='full-img' />
+
+
+# Implications
+
+## Where is this going?
+<img src='./images/44_implications.jpg' alt='implications' class='full-img' />
+
+## Where is this going?
+ <img src='./images/45_implications.jpg' alt='implications' class='full-img' />
+
+#Thanks
+
+## Resources
+
+* Udacity Deep Learning material
+* Sebastian Thrun's YouTube content
+* Siraj Raval's YouTube channel
+* deeplearning.ai (Andrew Ng)
+* [http://www.deeplearningbook.org/](http://www.deeplearningbook.org/)
 
